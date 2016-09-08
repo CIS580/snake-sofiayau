@@ -8,7 +8,6 @@ backBuffer.width = frontBuffer.width;
 backBuffer.height = frontBuffer.height;
 var backCtx = backBuffer.getContext('2d');
 var apple;
-var snake = [];
 var snakeSize = 10;
 var oldTime = performance.now();
 var x = 0;
@@ -120,7 +119,7 @@ function loop(newTime) {
 function update(elapsedTime) {
   //draw the path of the snake
   backCtx.fillStyle = "purple";
-  backCtx.fillRect(0,0,backCtx.width,backCtx.height);
+  backCtx.fillRect(0,0,backBuffer.width,backBuffer.height);
   var snakeX = snake[0].x;
   var snakeY = snake[0].y;
 //movement of snake
@@ -163,8 +162,8 @@ function update(elapsedTime) {
 
 
   // TODO: Determine if the snake has moved out-of-bounds (offscreen)
-  if(snakeX == -1 || snakeX == backCtx.width / snakeSize || snakeY == -1 ||snakeY == backCtx.height/snakeSize || checkCollision(snakeX,snakeY,snake)){
-    backCtx.clearRect(0,0,backCtx.width, backCtx.height);
+  if(snakeX == -1 || snakeX == backBuffer.width / snakeSize || snakeY == -1 ||snakeY == backBuffer.height/snakeSize || checkCollision(snakeX,snakeY,snake)){
+    backCtx.clearRect(0,0,backBuffer.width, backBuffer.height);
     gameOver();
     return;
   }
