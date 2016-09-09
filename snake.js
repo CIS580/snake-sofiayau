@@ -2,16 +2,21 @@
 var frontBuffer = document.getElementById('snake');
 var frontCtx = frontBuffer.getContext('2d');
 var backBuffer = document.createElement('canvas');
-var speed = 1/16/1000;
+var speed = 1/12/1000;
 var score = 0;
 backBuffer.width = frontBuffer.width;
 backBuffer.height = frontBuffer.height;
 var backCtx = backBuffer.getContext('2d');
-var apple;
+var apple = {x: -1, y: 0};
 var snakeSize = 10;
 var oldTime = performance.now();
 var x = 0;
-var y =0;
+var snake = [];
+var length = 5;
+  //push 3 elements of array, x=0, y=index
+for(var i =length; i >= 0; i--){
+  snake.push({x:i, y:0});
+}
 
 /*function init(){
 drawSnake();
@@ -112,14 +117,12 @@ function loop(newTime) {
    //the warning of game over
    frontCtx.fillRect(0,0,frontBuffer.width,frontBuffer.height);
    frontCtx.fillStyle = "red";
-   frontCtx.fillText("game over");
-   frontCtx.fillText("score"+scoreText()+frontBuffer.width,frontBuffer.height);
+   frontCtx.fillText("game over",frontBuffer.width,frontBuffer.height);
+   //frontCtx.fillText("score"+scoreText()+frontBuffer.width,frontBuffer.height);
  }
 
 function update(elapsedTime) {
   //draw the path of the snake
-  backCtx.fillStyle = "purple";
-  backCtx.fillRect(0,0,backBuffer.width,backBuffer.height);
   var snakeX = snake[0].x;
   var snakeY = snake[0].y;
 //movement of snake
@@ -136,7 +139,7 @@ function update(elapsedTime) {
   var spawnApple = function(){
     apple = {
       x: Math.floor((Math.random() * 30)+1),
-      y: Math.floor((Math.random() * 30)+1)
+      y: Math.floor((Math.random() * 50)+1)
     }
     //position of the snake
     for (var i=0; i<snake.lenth; i++){
@@ -180,13 +183,8 @@ function update(elapsedTime) {
     var tail = snake.pop();
     tail.x = snakeX;
     tail.y = snakeY;
+    snake.unshift(tail);
   }
-  snake.unshift(tail);
-  for(var i =0; i<snake.length; i++){
-    snakeBody(snake[i].x,snake[i].y);
-  }
-  food(apple.x, apple.y);
-  scoreText();
   // TODO: [Extra Credit] Determine if the snake has run into an obstacle
 
 }
@@ -199,11 +197,13 @@ function update(elapsedTime) {
   */
 function render(elapsedTime) {
   // TODO: Draw the game objects into the backBuffer
-    backCtx.clearRect(0, 0, backBuffer.width, backBuffer.height);
-    var snakeBody = function(x,y){
+  backCtx.fillStyle = "grey";
+  backCtx.fillRect(0,0,backBuffer.width,backBuffer.height);
+  var snakeBody = function(x,y){
     backCtx.fillStyle = "green";
-    backCtx.rect(x * snakeSize, y * snakeSize, snakeSize, snakeSize);
-     }
+    backCtx.fillRect(x * snakeSize, y * snakeSize, snakeSize, snakeSize);
+    console.log(x * snakeSize, y * snakeSize, snakeSize, snakeSize);
+   }
    var food = function(x,y){
      backCtx.fillStyle = "red";
      backCtx.fillRect(x * snakeSize, y * snakeSize, snakeSize, snakeSize);
@@ -215,13 +215,14 @@ function render(elapsedTime) {
    }
 
    //body of the snake
-   var drawSnake = function(){
-     var length = 2;
-     //push 3 elements of array, x=0, y=index
-     for(var i =lenth; i >= 0; i--){
-       snake.push({x:i, y:0});
-     }
+
+
+   for(var i =0; i<snake.length; i++){
+     snakeBody(snake[i].x,snake[i].y);
    }
+   snakeBody(20, 20);
+   food(apple.x, apple.y);
+   scoreText();
 
 }
 
